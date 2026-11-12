@@ -89,7 +89,7 @@ footer{text-align:center;padding:25px;background:#101a2e;color:#aaa}
 <script>
 const supabaseClient = window.supabase.createClient(
   "https://vhbuczyulihjugcvdvif.supabase.co",
-  "sb_publishable_Xc1FQdgnPSWUWHq6d0SLNA_GY4QeBaP"
+SLNA_GY4QeBaP"
 );
 
 const message = document.getElementById("accountMessage");
@@ -126,7 +126,26 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
   }
 });
 
-document.getElementById("loginForm").addEventListener("submit", async (e) => {
+document.getElementById("loginForm"<a href="#" id="forgotPassword">Forgot Password?</a>).addEventListener("submit", async (e) => {document.getElementById("forgotPassword")?.addEventListener("click", async (e) => {
+  e.preventDefault();
+  h
+    const email = document.getElementById("email").value.trim();
+    
+      if (!email) {
+          alert("Please enter your email address first.");
+              return;
+                }
+                
+                  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                      redirectTo: window.location.origin
+                        });
+
+                          if (error) {
+                              alert(error.message);
+                                } else {
+                                    alert("Password reset email sent. Please check your inbox.");
+                                      }
+                                      });
   e.preventDefault();
   message.textContent = "Signing in...";
 
