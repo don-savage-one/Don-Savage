@@ -58,5 +58,105 @@ footer{text-align:center;padding:25px;background:#101a2e;color:#aaa}
 <footer>
 © 2026 DON SAVAGE ONE. All Rights Reserved.
 </footer>
+
+<section id="ds-account" style="max-width:450px;margin:40px auto;padding:25px;background:#111;color:white;border-radius:15px;font-family:Arial">
+  <h2 style="text-align:center">DON SAVAGE ONE</h2>
+  <p style="text-align:center">Create your global account</p>
+
+  <h3>Create Account</h3>
+  <form id="signupForm">
+    <input id="fullName" placeholder="Full name" required style="width:100%;padding:12px;margin:6px 0;box-sizing:border-box">
+    <input id="username" placeholder="Username" required style="width:100%;padding:12px;margin:6px 0;box-sizing:border-box">
+    <input id="signupEmail" type="email" placeholder="Email address" required style="width:100%;padding:12px;margin:6px 0;box-sizing:border-box">
+    <input id="signupPassword" type="password" placeholder="Password (minimum 6 characters)" minlength="6" required style="width:100%;padding:12px;margin:6px 0;box-sizing:border-box">
+    <button type="submit" style="width:100%;padding:13px;background:#d6a800;color:black;border:0;border-radius:6px;margin-top:10px">Create Account</button>
+  </form>
+
+  <hr style="margin:25px 0">
+
+  <h3>Already have an account? Login</h3>
+  <form id="loginForm">
+    <input id="loginEmail" type="email" placeholder="Email address" required style="width:100%;padding:12px;margin:6px 0;box-sizing:border-box">
+    <input id="loginPassword" type="password" placeholder="Password" required style="width:100%;padding:12px;margin:6px 0;box-sizing:border-box">
+    <button type="submit" style="width:100%;padding:13px;background:#d6a800;color:black;border:0;border-radius:6px;margin-top:10px">Login</button>
+  </form>
+
+  <p id="accountMessage" style="text-align:center;margin-top:18px"></p>
+  <button id="logoutButton" hidden style="padding:12px;width:100%">Logout</button>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseClient = window.supabase.createClient(
+  "https://vhbuczyulihjugcvdvif.supabase.co",
+  "sb_publishable_Xc1FQdgnPSWUWHq6d0SLNA_GY4QeBaP"
+);
+
+const message = document.getElementById("accountMessage");
+const logoutButton = document.getElementById("logoutButton");
+
+document.getElementById("signupForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  message.textContent = "Creating your account...";
+
+  const fullName = document.getElementById("fullName").value.trim();
+  const username = document.getElementById("username").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value;
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: {
+      emailRedirectTo: window.location.origin,
+      data: {
+        full_name: fullName,
+        username: username
+      }
+    }
+  });
+
+  if (error) {
+    message.textContent = error.message;
+  } else if (data.session) {
+    message.textContent = "Welcome to DON SAVAGE ONE!";
+    logoutButton.hidden = false;
+  } else {
+    message.textContent = "Account created! Check your email to confirm your account.";
+  }
+});
+
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  message.textContent = "Signing in...";
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    message.textContent = error.message;
+  } else {
+    message.textContent = "Welcome back to DON SAVAGE ONE!";
+    logoutButton.hidden = false;
+  }
+});
+
+logoutButton.addEventListener("click", async () => {
+  const { error } = await supabaseClient.auth.signOut();
+  message.textContent = error ? error.message : "You have logged out.";
+  logoutButton.hidden = true;
+});
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (session) {
+    logoutButton.hidden = false;
+  }
+});
+</script>
 </body>
 </html>
