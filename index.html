@@ -86,7 +86,7 @@ footer{text-align:center;padding:25px;background:#101a2e;color:#aaa}
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
+<script><script><script>
 const supabaseClient = window.supabase.createClient(
   "https://vhbuczyulihjugcvdvif.supabase.co",
 SLNA_GY4QeBaP"
@@ -107,7 +107,7 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
   const { data, error } = await supabaseClient.auth.signUp({
     email,
     password,
-    options: {
+    options: {8i
       emailRedirectTo: window.location.origin,
       data: {
         full_name: fullName,
@@ -126,7 +126,7 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
   }
 });
 
-document.getElementById("loginForm"<a href="#" id="forgotPassword">Forgot Password?</a>).addEventListener("submit", async (e) => {document.getElementById("forgotPassword")?.addEventListener("click", async (e) => {
+document.getElementById("loginForm"<a href="#" id="forgofortPassword">Forgot Password?</a>).addEventListener("submit", async (e) => {document.getElementById("forgotPassword")?.addEventListener("click", async (e) => {
   e.preventDefault();
   h
     const email = document.getElementById("email").value.trim();
@@ -175,7 +175,26 @@ supabaseClient.auth.onAuthStateChange((event, session) => {
   if (session) {
     logoutButton.hidden = false;
   }
-});
+});// DON SAVAGE ONE - Password Update
+supabaseClient.auth.onAuthStateChange(async (event, session) => {
+  if (event === "PASSWORD_RECOVERY") {
+      const newPassword = prompt("Enter your new password:");
+
+          if (newPassword && newPassword.length >= 6) {
+                const { error } = await supabaseClient.auth.updateUser({
+                        password: newPassword
+                              });
+
+                                    if (error) {
+                                            alert(error.message);
+                                                  } else {
+                                                          alert("Your password has been updated successfully!");
+                                                                }
+                                                                    } else if (newPassword !== null) {
+                                                                          alert("Password must be at least 6 characters.");
+                                                                              }
+                                                                                }
+                                                                                });
 </script>
 </body>
 </html>
