@@ -86,10 +86,10 @@ footer{text-align:center;padding:25px;background:#101a2e;color:#aaa}
 </section>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script><script><script>
+<script>
 const supabaseClient = window.supabase.createClient(
   "https://vhbuczyulihjugcvdvif.supabase.co",
-SLNA_GY4QeBaP"
+"SLNA_GY4QeBaP"
 );
 
 const message = document.getElementById("accountMessage");
@@ -107,13 +107,14 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
   const { data, error } = await supabaseClient.auth.signUp({
     email,
     password,
-    options: {8i
+    options: {
       emailRedirectTo: window.location.origin,
-      data: {
-        full_name: fullName,
-        username: username
+        data: {
+            full_name: fullName,
+                username: username
+                  }
       }
-    }
+
   });
 
   if (error) {
@@ -123,29 +124,28 @@ document.getElementById("signupForm").addEventListener("submit", async (e) => {
     logoutButton.hidden = false;
   } else {
     message.textContent = "Account created! Check your email to confirm your account.";
+document.getElementById("forgotPassword")?.addEventListener("click", async (e) => {
+  e.preventDefault();
+
+  const email = document.getElementById("loginEmail").value.trim();
+
+  if (!email) {
+    alert("Please enter your email address first.");
+    return;
+  }
+
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin
+  });
+
+  if (error) {
+    alert(error.message);
+  } else {
+    alert("Password reset email sent. Please check your inbox.");
   }
 });
 
-document.getElementById("loginForm"<a href="#" id="forgofortPassword">Forgot Password?</a>).addEventListener("submit", async (e) => {document.getElementById("forgotPassword")?.addEventListener("click", async (e) => {
-  e.preventDefault();
-  h
-    const email = document.getElementById("email").value.trim();
-    
-      if (!email) {
-          alert("Please enter your email address first.");
-              return;
-                }
-                
-                  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-                      redirectTo: window.location.origin
-                        });
-
-                          if (error) {
-                              alert(error.message);
-                                } else {
-                                    alert("Password reset email sent. Please check your inbox.");
-                                      }
-                                      });
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
   e.preventDefault();
   message.textContent = "Signing in...";
 
@@ -182,7 +182,7 @@ supabaseClient.auth.onAuthStateChange(async (event, session) => {
 
           if (newPassword && newPassword.length >= 6) {
                 const { error } = await supabaseClient.auth.updateUser({
-                        password: newPassword
+                                password: newPassword
                               });
 
                                     if (error) {
@@ -195,6 +195,8 @@ supabaseClient.auth.onAuthStateChange(async (event, session) => {
                                                                               }
                                                                                 }
                                                                                 });
+                                                                              }                                                                            
 </script>
 </body>
 </html>
+
